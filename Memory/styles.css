@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    font-family: Helvetica, sans-serif;
+}
+
+.title {
+    background-color: #f0f0f0;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid #dddddd;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    margin: 10px auto;
+    font-size: 16px; 
+}
+.mainbody {
+    display: flex; /* Zorgt ervoor dat de applicatie verdeeld kan worden */
+    height: 100vh;
+    overflow: auto;
+}
+
+.column {
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.column-large {
+    flex: 3;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+ 
+}
+
+.column-large > div:first-child {
+    width: 500px;
+    text-align: center;
+    font-size: 1.2rem;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+.spel-info {
+    font-size: 1.2rem;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.memory-speelbord {
+    width: 500px;
+    display: grid;
+    grid-template-columns: repeat(6, 75px);
+    grid-template-rows: repeat(6, 75px);
+    gap: 10px;
+    padding: 10px;
+}
+
+.memory-kaart {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.gesloten {
+    background-color: lightskyblue;
+}
+
+.open {
+    background-color: lightsalmon;
+}
+
+.gevonden {
+    background-color: lightgreen;
+}
+
+.column-small {
+    background-color: #d0d0d0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    
+}
+
+.topvijf {
+    color:rebeccapurple;
+}
+
+.topvijf ul {
+    list-style-type: none;
+    margin: 0;
+}
