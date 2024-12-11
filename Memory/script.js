@@ -36,6 +36,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function openCard(card) {
+        if (card.classList.contains('gesloten')) {
+            card.classList.remove('gesloten');
+            card.classList.add('open');
+        }
+    }
+
     const numCards = document.querySelectorAll('.memory-kaart').length;
     const numPairs = numCards / 2;
     const randomLetters = generateRandomLetters(numPairs);
@@ -44,4 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Start de timer wanneer op de "Start Spel!" knop wordt geklikt
     document.querySelector('#start-game').addEventListener('click', startTimer);
+
+    // Voeg een event listener toe aan elke kaart
+    document.querySelectorAll('.memory-kaart').forEach(card => {
+        card.addEventListener('click', () => {
+            openCard(card);
+        });
+    });
 });

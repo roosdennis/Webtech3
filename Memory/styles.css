@@ -14,7 +14,7 @@ body {
     font-size: 16px; 
 }
 .mainbody {
-    display: flex; /* Zorgt ervoor dat de applicatie verdeeld kan worden */
+    display: flex;
     height: 100vh;
     overflow: auto;
 }
@@ -69,14 +69,17 @@ body {
 
 .gesloten {
     background-color: lightskyblue;
+    color:lightskyblue;
 }
 
 .open {
     background-color: lightsalmon;
+    color: black;
 }
 
 .gevonden {
     background-color: lightgreen;
+    color: black;
 }
 
 .column-small {
