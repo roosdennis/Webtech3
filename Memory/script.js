@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getElapsedTime() {
         const elapsedTime = Date.now() - startTime;
-        return Math.floor(elapsedTime / 1000); // Verstreken tijd in seconden
+        return Math.floor(elapsedTime / 1000);
     }
 
     function generateRandomLetters(numPairs) {
@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        letters = letters.concat(letters); // Verdubbel de letters om paren te vormen
-        letters.sort(() => Math.random() - 0.5); // Schud de letters
+        letters = letters.concat(letters);
+        letters.sort(() => Math.random() - 0.5);
 
         return letters;
     }
@@ -98,8 +98,18 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 alert(`Gefeliciteerd! Je hebt het spel voltooid in ${elapsedTime} seconden.`);
                 updateTopVijf(elapsedTime);
-            }, 2000); // Wacht 2 seconden voordat het bericht wordt weergegeven
+                applyRandomBounceAnimation();
+            }, 2000);
         }
+    }
+
+    function applyRandomBounceAnimation() {
+        const cards = document.querySelectorAll('.memory-kaart');
+        const animations = ['bounce-vertical', 'bounce-horizontal', 'bounce-diagonal'];
+        cards.forEach(card => {
+            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+            card.classList.add(randomAnimation);
+        });
     }
 
     function updateTopVijf(elapsedTime) {
@@ -115,15 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fillCardsWithLetters(randomLetters);
 
-    // Voeg een event listener toe aan de "Start Spel!" knop
     document.querySelector('#start-game').addEventListener('click', () => {
         startTimer();
         makeCardsClickable();
     });
 
-    // Voeg een event listener toe aan elke kaart
     document.querySelectorAll('.memory-kaart').forEach(card => {
-        card.classList.add('disabled'); // Maak de kaarten niet-klikbaar bij het laden
+        card.classList.add('disabled');
         card.addEventListener('click', () => {
             if (lockBoard) {
                 flipBackCards();
