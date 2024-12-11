@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     let timerInterval;
     let startTime;
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
 
     function startTimer() {
         startTime = Date.now();
@@ -43,6 +46,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function checkForMatch() {
+        if (firstCard.textContent === secondCard.textContent) {
+            firstCard.classList.add('gevonden');
+            secondCard.classList.add('gevonden');
+            resetBoard();
+        } else {
+            lockBoard = true;
+        }
+    }
+
+    function flipBackCards() {
+        firstCard.classList.remove('open');
+        firstCard.classList.add('gesloten');
+        secondCard.classList.remove('open');
+        secondCard.classList.add('gesloten');
+        resetBoard();
+    }
+
+    function resetBoard() {
+        [firstCard, secondCard, lockBoard] = [null, null, false];
+    }
+
     const numCards = document.querySelectorAll('.memory-kaart').length;
     const numPairs = numCards / 2;
     const randomLetters = generateRandomLetters(numPairs);
@@ -55,7 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Voeg een event listener toe aan elke kaart
     document.querySelectorAll('.memory-kaart').forEach(card => {
         card.addEventListener('click', () => {
+            if (lockBoard) {
+                flipBackCards();
+                return;
+            }
+            if (card === firstCard) return;
+
             openCard(card);
+
+            if (!firstCard) {
+                firstCard = card;
+                return;
+            }
+
+            secondCard = card;
+
+            checkForMatch();
         });
     });
 });
