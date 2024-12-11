@@ -17,6 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.spel-info p:nth-child(1)').textContent = `Verlopen tijd: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
 
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
+
+    function getElapsedTime() {
+        const elapsedTime = Date.now() - startTime;
+        return Math.floor(elapsedTime / 1000); // Verstreken tijd in seconden
+    }
+
     function generateRandomLetters(numPairs) {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let letters = [];
@@ -54,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             firstCard.classList.add('gevonden');
             secondCard.classList.add('gevonden');
             resetBoard();
+            checkIfGameIsOver();
         } else {
             lockBoard = true;
         }
@@ -71,17 +81,49 @@ document.addEventListener('DOMContentLoaded', () => {
         [firstCard, secondCard, lockBoard] = [null, null, false];
     }
 
+    function makeCardsClickable() {
+        document.querySelectorAll('.memory-kaart').forEach(card => {
+            card.classList.remove('disabled');
+        });
+    }
+
+    function checkIfGameIsOver() {
+        const allCards = document.querySelectorAll('.memory-kaart');
+        const allFound = Array.from(allCards).every(card => card.classList.contains('gevonden'));
+
+        if (allFound) {
+            stopTimer();
+            const elapsedTime = getElapsedTime();
+            document.querySelector('.memory-speelbord').classList.add('bounce');
+            setTimeout(() => {
+                alert(`Gefeliciteerd! Je hebt het spel voltooid in ${elapsedTime} seconden.`);
+                updateTopVijf(elapsedTime);
+            }, 2000); // Wacht 2 seconden voordat het bericht wordt weergegeven
+        }
+    }
+
+    function updateTopVijf(elapsedTime) {
+        const topVijfList = document.querySelector('.topvijf ul');
+        const newScoreItem = document.createElement('li');
+        newScoreItem.textContent = `Jij: ${elapsedTime} seconden`;
+        topVijfList.appendChild(newScoreItem);
+    }
+
     const numCards = document.querySelectorAll('.memory-kaart').length;
     const numPairs = numCards / 2;
     const randomLetters = generateRandomLetters(numPairs);
 
     fillCardsWithLetters(randomLetters);
 
-    // Start de timer wanneer op de "Start Spel!" knop wordt geklikt
-    document.querySelector('#start-game').addEventListener('click', startTimer);
+    // Voeg een event listener toe aan de "Start Spel!" knop
+    document.querySelector('#start-game').addEventListener('click', () => {
+        startTimer();
+        makeCardsClickable();
+    });
 
     // Voeg een event listener toe aan elke kaart
     document.querySelectorAll('.memory-kaart').forEach(card => {
+        card.classList.add('disabled'); // Maak de kaarten niet-klikbaar bij het laden
         card.addEventListener('click', () => {
             if (lockBoard) {
                 flipBackCards();
