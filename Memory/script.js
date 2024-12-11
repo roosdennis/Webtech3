@@ -21,13 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let letters = [];
 
-        for (let i = 0; i < numPairs; i++) {
+        while (letters.length < numPairs) {
             const randomIndex = Math.floor(Math.random() * alphabet.length);
-            letters.push(alphabet[randomIndex]);
+            const letter = alphabet[randomIndex];
+            if (!letters.includes(letter)) {
+                letters.push(letter);
+            }
         }
 
-        letters = letters.concat(letters);
-        letters.sort(() => Math.random() - 0.5);
+        letters = letters.concat(letters); // Verdubbel de letters om paren te vormen
+        letters.sort(() => Math.random() - 0.5); // Schud de letters
 
         return letters;
     }
