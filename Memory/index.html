@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,18 +7,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Titel van de applicatie -->
     <div class="container title">
         <h1> Memory!</h1>
     </div>
+
     <div class="mainbody">
+        <!-- Hoofdgedeelte waar het speelbord zich bevindt -->
         <div class="column column-large">
             <div class="spel-info">
+                <!-- Informatie over de status van het spel -->
                 <p>Verlopen tijd: --:--</p>
                 <p>Resterende tijd: --:--</p>
                 <p>Aantal gevonden paren:.....</p>
                 <p>Tijd resterend:......</p>
             </div>
+            <!-- Speelbord waar de kaarten worden weergegeven -->
             <div class="memory-speelbord">
+                <!-- Dynamische kaarten, standaard gesloten -->
                 <div class="memory-kaart gesloten"></div>
                 <div class="memory-kaart gesloten"></div>
                 <div class="memory-kaart gesloten"></div>
@@ -54,10 +61,12 @@
                 <div class="memory-kaart gesloten"></div>
                 <div class="memory-kaart gesloten"></div>
                 <div class="memory-kaart gesloten"></div>
-                
             </div>
         </div>
+
+        <!-- Sidebar met extra opties -->
         <div class="column column-small">
+            <!-- Top 5 scores -->
             <div class="topvijf">
                 <p>🎉Top 5🎉</p>
                 <ul>
@@ -68,30 +77,25 @@
                     <li>5: Greta: 16</li>
                 </ul>
             </div>
+
+            <!-- Gemiddelde speeltijd -->
             <div>
                 <p>Gemiddeld gespeelde tijd: --:--</p>
             </div>
-                <div>
-                    <div class="dropdown">
-                        <button class="dropbtn">Afbeeldingstype</button>
-                        <div class="dropdown-content">
-                            <a href="#" data-value="picsum">Random Afbeeldingen</a>
-                            <a href="#" data-value="dog">Honden</a>
-                            <a href="#" data-value="cat">Katten</a>
-                        </div>
+
+            <!-- Dropdowns voor instellingen -->
+            <div>
+                <div class="dropdown">
+                    <button class="dropbtn">Afbeeldingstype</button>
+                    <div class="dropdown-content">
+                        <a href="#" data-value="picsum">Random Afbeeldingen</a>
+                        <a href="#" data-value="dog">Honden</a>
+                        <a href="#" data-value="cat">Katten</a>
                     </div>
-                    
-                    <!-- <div class="dropdown">
-                        <button class="dropbtn">Karakter</button>
-                        <div class="dropdown-content">
-                        <a href="#">*</a>
-                        <a href="#">#</a>
-                        <a href="#">@</a>
-                        </div>
-                    </div> -->
-                    <div class="dropdown">
-                        <button class="dropbtn">Afmeting</button>
-                        <div class="dropdown-content">
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Afmeting</button>
+                    <div class="dropdown-content">
                         <a href="#">2</a>
                         <a href="#">4</a>
                         <a href="#">8</a>
@@ -100,14 +104,18 @@
                     </div>
                 </div>  
             </div>
+
+            <!-- Kleurkiezer voor de gesloten kaarten -->
             <div>
-                <button>Kleur 1</button>
-                <button>Kleur 2</button>
-                <button>Kleur 3</button>
+                <label for="card-color">Kies kaartkleur:</label>
+                <input type="color" id="card-color" value="#87CEEB">
             </div>
+
+            <!-- Startknop om het spel te starten -->
             <button id="start-game">Start Spel!</button>
         </div>
     </div>    
+
     <script src="script.js"></script>
 </body>
 </html>
