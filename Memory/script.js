@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let secondCard = null;
     let lockBoard = false;
 
+    // =================== Timer Functions ===================
+
     function startTimer() {
         startTime = Date.now();
         timerInterval = setInterval(updateTimer, 1000);
@@ -26,6 +28,58 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.floor(elapsedTime / 1000);
     }
 
+    // =================== Card Management ===================
+
+    function openCard(card) {
+        if (card.classList.contains('gesloten')) {
+            card.classList.remove('gesloten');
+            card.classList.add('open');
+        }
+    }
+
+    function flipBackCards() {
+        firstCard.classList.remove('open');
+        firstCard.classList.add('gesloten');
+        secondCard.classList.remove('open');
+        secondCard.classList.add('gesloten');
+        resetBoard();
+    }
+
+    function checkForMatch() {
+        if (firstCard.textContent === secondCard.textContent) {
+            firstCard.classList.add('gevonden');
+            secondCard.classList.add('gevonden');
+            resetBoard();
+            checkIfGameIsOver();
+        } else {
+            lockBoard = true;
+            setTimeout(flipBackCards, 1000);
+        }
+    }
+
+    function resetBoard() {
+        [firstCard, secondCard, lockBoard] = [null, null, false];
+    }
+
+    // =================== Utility Functions ===================
+
+    async function fetchImages(apiType, numPairs) {
+    let images = [];
+    if (apiType === 'picsum') {
+        for (let i = 0; i < numPairs; i++) {
+            images.push(`https://picsum.photos/seed/${i}/100`);
+        }
+    } else if (apiType === 'dog') {
+        const response = await fetch(`https://dog.ceo/api/breeds/image/random/${numPairs}`);
+        const data = await response.json();
+        images = data.message;
+    } else if (apiType === 'cat') {
+        for (let i = 0; i < numPairs; i++) {
+            images.push(`https://cataas.com/cat?${i}`);
+        }
+    }
+    return [...images, ...images].sort(() => Math.random() - 0.5); // Dubbele set en schudden
+}
     function generateRandomLetters(numPairs) {
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         let letters = [];
@@ -51,41 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function openCard(card) {
-        if (card.classList.contains('gesloten')) {
-            card.classList.remove('gesloten');
-            card.classList.add('open');
-        }
-    }
-
-    function checkForMatch() {
-        if (firstCard.textContent === secondCard.textContent) {
-            firstCard.classList.add('gevonden');
-            secondCard.classList.add('gevonden');
-            resetBoard();
-            checkIfGameIsOver();
-        } else {
-            lockBoard = true;
-        }
-    }
-
-    function flipBackCards() {
-        firstCard.classList.remove('open');
-        firstCard.classList.add('gesloten');
-        secondCard.classList.remove('open');
-        secondCard.classList.add('gesloten');
-        resetBoard();
-    }
-
-    function resetBoard() {
-        [firstCard, secondCard, lockBoard] = [null, null, false];
-    }
-
     function makeCardsClickable() {
         document.querySelectorAll('.memory-kaart').forEach(card => {
             card.classList.remove('disabled');
         });
     }
+
+    // =================== Game End Logic ===================
 
     function checkIfGameIsOver() {
         const allCards = document.querySelectorAll('.memory-kaart');
@@ -103,6 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function updateTopVijf(elapsedTime) {
+        const topVijfList = document.querySelector('.topvijf ul');
+        const newScoreItem = document.createElement('li');
+        newScoreItem.textContent = `Jij: ${elapsedTime} seconden`;
+        topVijfList.appendChild(newScoreItem);
+    }
+
     function applyRandomBounceAnimation() {
         const cards = document.querySelectorAll('.memory-kaart');
         const animations = ['bounce-vertical', 'bounce-horizontal', 'bounce-diagonal'];
@@ -112,20 +145,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function updateTopVijf(elapsedTime) {
-        const topVijfList = document.querySelector('.topvijf ul');
-        const newScoreItem = document.createElement('li');
-        newScoreItem.textContent = `Jij: ${elapsedTime} seconden`;
-        topVijfList.appendChild(newScoreItem);
-    }
-
-    const numCards = document.querySelectorAll('.memory-kaart').length;
-    const numPairs = numCards / 2;
-    const randomLetters = generateRandomLetters(numPairs);
-
-    fillCardsWithLetters(randomLetters);
-
+    // =================== Event Listeners ===================
+    
     document.querySelector('#start-game').addEventListener('click', () => {
+        const numCards = document.querySelectorAll('.memory-kaart').length;
+        const numPairs = numCards / 2;
+        const randomLetters = generateRandomLetters(numPairs);
+
+        fillCardsWithLetters(randomLetters);
         startTimer();
         makeCardsClickable();
     });
@@ -133,10 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.memory-kaart').forEach(card => {
         card.classList.add('disabled');
         card.addEventListener('click', () => {
-            if (lockBoard) {
-                flipBackCards();
-                return;
-            }
+            if (lockBoard) return;
             if (card === firstCard) return;
 
             openCard(card);
@@ -147,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             secondCard = card;
-
             checkForMatch();
         });
     });
